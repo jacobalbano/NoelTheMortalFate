@@ -1,0 +1,104 @@
+﻿using Noel.Common.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Noel.Common
+{
+    public sealed class Logger : IDisposable
+    {
+        public Logger(params ILoggerEndpoint[] endpoints)
+        {
+            Endpoints = endpoints?.ToList() ?? throw new ArgumentNullException("endpoints");
+            ctx = new ContextImpl(this);
+        }
+
+        public IDisposable Context<T>(T message)
+        {
+            return Context(message?.ToString() ?? "");
+        }
+
+        public IDisposable Context(string section)
+        {
+            LogLine(section);
+            depth++;
+            return ctx;
+        }
+
+        public IDisposable Context(string section, params object[] args)
+        {
+            return Context(string.Format(section, args));
+        }
+
+        public void LogLine<T>(T message)
+        {
+            LogLine(message?.ToString() ?? "");
+        }
+
+        public void LogLine(string message)
+        {
+            if (depth > 0) message = new string('\t', depth) + message;
+            foreach (var ep in Endpoints)
+                ep.WriteLine(message);
+        }
+
+        public void LogException(Exception e)
+        {
+            using (Context("Error:"))
+            {
+                var lines = e.ToString().Split("\r\n".ToCharArray());
+                foreach (var line in lines)
+                    LogLine(line);
+            }
+        }
+
+        public void WriteLine(string message, params object[] args)
+        {
+            LogLine(string.Format(message, args));
+        }
+
+        private class ContextImpl : IDisposable
+        {
+            private Logger logger;
+
+            public ContextImpl(Logger logger)
+            {
+                this.logger = logger;
+            }
+
+            void IDisposable.Dispose()
+            {
+                if (--logger.depth < 0)
+                    throw new Exception("Logger context corruption");
+            }
+        }
+
+        private readonly ContextImpl ctx;
+        private readonly List<ILoggerEndpoint> Endpoints;
+        private int depth = 0;
+
+        #region IDisposable Support
+        private bool disposed = false;
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    foreach (var endpoint in Endpoints)
+                        endpoint.Dispose();
+                }
+
+                disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
+    }
+}

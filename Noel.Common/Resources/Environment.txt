@@ -1,0 +1,2 @@
+﻿The existence of this file prevents configuration from being re-initialized upon app load.
+To force a reset, delete this file.

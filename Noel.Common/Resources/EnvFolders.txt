@@ -1,0 +1,4 @@
+﻿logs
+cfg
+hyworking
+backup

@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Noel.Edit</title>
+		<link href="css/handsontable.full.min.css" rel="stylesheet" media="screen">
+		<link href="css/index.css" rel="stylesheet" media="screen">
+		<link href="css/bulma.css" rel="stylesheet" media="screen">
+
+		<script src="lib/fa.all.js"></script>
+		<script src="lib/vue.min.js"></script>
+		<script src="lib/handsontable.full.min.js"></script>
+		<script src="lib/vue-handsontable.min.js"></script>
+		<script src="lib/lodash.min.js"></script>
+		
+		<script defer src="types.js"></script>
+		<script defer src="api.js"></script>
+		<script defer src="app.js"></script>
+	</head>
+	<body>
+		<div id="vue-app">
+			<div id="sidebar" class="columns is-variable is-1" style="height: vh">
+				<div class="column is-narrow" style="width: 300px;">
+					<div class="box">
+						<p class="title is-5">File Browser</p>
+						<p class="control has-icons-left">
+							<input class="input" type="text" v-model="fileFilter" placeholder="Search">
+							<span class="icon is-left">
+								<i class="fas fa-search" aria-hidden="true"></i>
+							</span>
+						</p>
+						<hr/>
+						<aside class="menu">
+							<div v-for="folder in folders">
+							<a class="menu-list">Season {{folder.number}}</a>
+							<ul class="menu-list">
+								<li @click="openFile(folder.number, file)" v-for="file in filterFiles(folder.files)"><a>{{file}}</a></li>
+							</ul>
+							</div>
+						</aside>
+					</div>
+				</div>
+				<div id="workspace" class="column">
+					<div class="box">
+						<p class="title is-5">Workspace</p>
+						<div class="tabs is-boxed">
+							<ul>
+								<li @click="focusTab(index)" v-bind:class="{ 'is-active': isActive(file) }" v-for="(file, index) in files">
+									<a>
+										<span>Season {{file.seasonNum}}/{{file.filename}}</span>
+										&nbsp;&nbsp;
+										<button @click="deleteTab(index)" class="delete is-small"></button>
+									</a>
+								</li>
+							</ul>
+						</div>
+						
+						<div v-if="activeFile != null">
+							<hot-table
+								:data="activeFile.tableData"
+								:settings="tableSettings"
+							></hot-table>
+							<hr>
+
+							<button @click="saveFile()"
+								:disabled="activeFile.isSaving"
+								:class="{ 'is-loading': activeFile.isSaving, 'is-danger': activeFile.isError }"
+								class="save-button button is-success"
+							>
+								<span class="icon is-small">
+									<i class="fas fa-check"></i>
+								</span>
+								<span>Save</span>
+							</button>
+						</div>
+						<div v-else>
+							Choose a file from the browser on the left
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
