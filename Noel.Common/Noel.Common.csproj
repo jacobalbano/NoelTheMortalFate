@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,10 +49,13 @@
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Config\DomainConfigAttribute.cs" />
     <Compile Include="Config\Domains\GameConfig.cs" />
-    <Compile Include="Embeds.cs" />
+    <Compile Include="EmbeddedFile.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="GameData\Season.cs" />
+    <Compile Include="Http\Attributes.cs" />
+    <Compile Include="Http\SimpleHTTPApiDispatcher.cs" />
+    <Compile Include="Http\SimpleHTTPServer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Logging\Endpoints\ConsoleEndpoint.cs" />
     <Compile Include="Logging\Endpoints\FileEndpoint.cs" />

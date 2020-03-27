@@ -1,6 +1,8 @@
 ﻿<!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Noel.Edit</title>
 		<link href="css/handsontable.full.min.css" rel="stylesheet" media="screen">
 		<link href="css/index.css" rel="stylesheet" media="screen">
@@ -12,33 +14,17 @@
 		<script src="lib/vue-handsontable.min.js"></script>
 		<script src="lib/lodash.min.js"></script>
 		
+		<script src="components/season-folder.js"></script>
+		<script src="components/file-browser.js"></script>
+
 		<script defer src="types.js"></script>
 		<script defer src="api.js"></script>
 		<script defer src="app.js"></script>
 	</head>
 	<body>
 		<div id="vue-app">
-			<div id="sidebar" class="columns is-variable is-1" style="height: vh">
-				<div class="column is-narrow" style="width: 300px;">
-					<div class="box">
-						<p class="title is-5">File Browser</p>
-						<p class="control has-icons-left">
-							<input class="input" type="text" v-model="fileFilter" placeholder="Search">
-							<span class="icon is-left">
-								<i class="fas fa-search" aria-hidden="true"></i>
-							</span>
-						</p>
-						<hr/>
-						<aside class="menu">
-							<div v-for="folder in folders">
-							<a class="menu-list">Season {{folder.number}}</a>
-							<ul class="menu-list">
-								<li @click="openFile(folder.number, file)" v-for="file in filterFiles(folder.files)"><a>{{file}}</a></li>
-							</ul>
-							</div>
-						</aside>
-					</div>
-				</div>
+			<div id="sidebar" class="columns is-variable is-1">
+				<file-browser @file-clicked="openFile"></file-browser>
 				<div id="workspace" class="column">
 					<div class="box">
 						<p class="title is-5">Workspace</p>
@@ -53,7 +39,7 @@
 								</li>
 							</ul>
 						</div>
-						
+
 						<div v-if="activeFile != null">
 							<hot-table
 								:data="activeFile.tableData"

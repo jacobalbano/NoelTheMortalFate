@@ -2,9 +2,6 @@
   el: '#vue-app',
   data: {
     files: [],
-	folders: api.listSeasons(),
-    fileFilter: '',
-
     activeFile: null,
 
     tableSettings: {
@@ -31,11 +28,6 @@
   },
 
   methods: {
-    filterFiles(files) {
-        const filter = (this.fileFilter || '').toUpperCase();
-        return _.filter(files, x => x.toUpperCase().indexOf(filter) >= 0);
-	},
-
 	isActive: function(tab) { return tab === this.activeFile; },
     focusTab: function(index) { this.activeFile = this.files[index]; },
     deleteTab: function(index) {
@@ -49,16 +41,16 @@
     },
 
     openFile: function(seasonNum, filename) {
-        const existing = _.find(this.files, x => x.seasonNum === seasonNum && x.filename === filename);
-        if (existing !== undefined) {
-            this.activeFile = existing;
-            return;
-		} else {
-            const newFile = api.getFile(seasonNum, filename);
-            this.files.push(newFile);
-            this.activeFile = newFile;
-		}
-	},
+			const existing = _.find(this.files, x => x.seasonNum === seasonNum && x.filename === filename);
+			if (existing !== undefined) {
+				this.activeFile = existing;
+				return;
+			} else {
+				const newFile = api.getFile(seasonNum, filename);
+				this.files.push(newFile);
+				this.activeFile = newFile;
+			}
+		},
 
     saveFile: function() {
         const file = this.activeFile;

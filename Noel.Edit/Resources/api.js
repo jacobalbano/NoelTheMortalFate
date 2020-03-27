@@ -7,13 +7,28 @@
 		getFile,
 		saveFile,
 	};
+	
+	async function httpGet(route, args) {
+		if (args !== undefined)
+			args = '?' + Object.keys(args).map(function (key) {
+				return encodeURIComponent(key) + '=' + encodeURIComponent(args[key]);
+			}).join('&');
+
+		var result = await fetch(window.location + route + (args || ''));
+		return result.json();
+	}
+	
+	async function httpPost(route, payload) {
+		var result = await fetch(window.location + route, {
+			method : "POST",
+			body : JSON.stringify(payload)
+		});
+
+		return result;
+	}
 
 	function listSeasons() {
-		return [
-			{ number: 1, files: [ 'Map004', 'Map005', 'Map006' ]},
-			{ number: 2, files: [ 'Map001', 'Map002', 'Map003', 'Map004']},
-			{ number: 3, files: [ 'Map003', 'CommonEvents' ]},
-		];
+		return httpGet('/api/Seasons');
 	}
 
 	function getFile(seasonNum, filename) {

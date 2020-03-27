@@ -86,9 +86,9 @@ namespace Noel.Common
             if (File.Exists("Environment.txt"))
                 return false;
 
-            File.WriteAllText("Environment.txt", Embeds.GetTextFile("Resources/Environment.txt"));
+            File.WriteAllText("Environment.txt", EmbeddedFile.GetTextFile("Resources/Environment.txt"));
 
-            foreach (var dir in Embeds.GetTextLines("EnvFolders.txt"))
+            foreach (var dir in EmbeddedFile.GetTextLines("Resources/EnvFolders.txt"))
                 Directory.CreateDirectory(dir);
 
             return true;

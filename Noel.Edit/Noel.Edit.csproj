@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditApi.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -50,25 +51,34 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\api.js" />
-    <Content Include="Resources\css\fa.all.min.css" />
-    <Content Include="Resources\css\handsontable.full.min.css" />
-    <Content Include="Resources\css\bulma.css" />
-    <Content Include="Resources\css\index.css" />
-    <Content Include="Resources\app.js" />
-    <Content Include="Resources\lib\fa.all.js" />
-    <Content Include="Resources\lib\handsontable.full.min.js" />
-    <Content Include="Resources\lib\lodash.min.js" />
-    <Content Include="Resources\types.js" />
-    <Content Include="Resources\lib\vue-handsontable.min.js" />
-    <Content Include="Resources\lib\vue.min.js" />
+    <EmbeddedResource Include="Resources\api.js" />
+    <EmbeddedResource Include="Resources\components\season-folder.js" />
+    <EmbeddedResource Include="Resources\css\fa.all.min.css" />
+    <EmbeddedResource Include="Resources\css\handsontable.full.min.css" />
+    <EmbeddedResource Include="Resources\css\bulma.css" />
+    <EmbeddedResource Include="Resources\css\index.css" />
+    <EmbeddedResource Include="Resources\app.js" />
+    <EmbeddedResource Include="Resources\lib\fa.all.js" />
+    <EmbeddedResource Include="Resources\lib\handsontable.full.min.js" />
+    <EmbeddedResource Include="Resources\lib\lodash.min.js" />
+    <EmbeddedResource Include="Resources\types.js" />
+    <EmbeddedResource Include="Resources\lib\vue-handsontable.min.js" />
+    <EmbeddedResource Include="Resources\lib\vue.min.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\index.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
-    <Folder Include="Resources\components\" />
+    <Folder Include="Resources\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Noel.Common\Noel.Common.csproj">
+      <Project>{DC759BC3-4182-4BAC-8C0D-367D7C6806F9}</Project>
+      <Name>Noel.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\components\file-browser.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

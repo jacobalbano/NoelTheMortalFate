@@ -31,6 +31,9 @@ namespace Noel.Common
 
         protected virtual void Dispose(bool disposing)
         {
+            if (disposed)
+                return;
+
             Environment.Dispose();
             Logger.Dispose();
 
