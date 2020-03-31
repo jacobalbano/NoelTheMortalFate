@@ -9,7 +9,7 @@
 	    colHeaders: ['Address', 'Meta', 'Japanese', 'English'],
 	    columns: [
 		    { data: 'address' },
-		    { data: 'meta'},
+		    { data: 'instructions'},
 		    { data: 'japanese', readOnly: true },
 		    { data: 'english' }
 	    ],
@@ -40,24 +40,29 @@
             this.activeFile = this.files[index-1];
     },
 
-    openFile: function(seasonNum, filename) {
-			const existing = _.find(this.files, x => x.seasonNum === seasonNum && x.filename === filename);
+    openFile: async function(seasonNum, filename) {
+			const existing = _.find(this.files, x => x.file.seasonNum === seasonNum && x.file.filename === filename);
 			if (existing !== undefined) {
 				this.activeFile = existing;
-				return;
 			} else {
-				const newFile = api.getFile(seasonNum, filename);
+				const newFile = await api.getFile(seasonNum, filename);
 				this.files.push(newFile);
 				this.activeFile = newFile;
 			}
 		},
 
-    saveFile: function() {
+    saveFile: async function() {
         const file = this.activeFile;
         file.isSaving = true;
 
-        api.saveFile(file.seasonNum, file.filename, file.tableData)
-            .then(() => file.isSaving = false);
+        try {
+            await api.saveFile(file.file);
+            file.isError = false;
+		} catch (e) {
+            file.isError = true;  
+		} finally {
+            file.isSaving = false
+		}
     },
   },
 

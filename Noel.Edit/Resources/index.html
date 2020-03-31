@@ -23,7 +23,7 @@
 	</head>
 	<body>
 		<div id="vue-app">
-			<div id="sidebar" class="columns is-variable is-1">
+			<div class="columns is-variable">
 				<file-browser @file-clicked="openFile"></file-browser>
 				<div id="workspace" class="column">
 					<div class="box">
@@ -32,7 +32,7 @@
 							<ul>
 								<li @click="focusTab(index)" v-bind:class="{ 'is-active': isActive(file) }" v-for="(file, index) in files">
 									<a>
-										<span>Season {{file.seasonNum}}/{{file.filename}}</span>
+										<span>Season {{file.file.seasonNum}}/{{file.file.filename}}</span>
 										&nbsp;&nbsp;
 										<button @click="deleteTab(index)" class="delete is-small"></button>
 									</a>
@@ -42,7 +42,7 @@
 
 						<div v-if="activeFile != null">
 							<hot-table
-								:data="activeFile.tableData"
+								:data="activeFile.file.strings"
 								:settings="tableSettings"
 							></hot-table>
 							<hr>

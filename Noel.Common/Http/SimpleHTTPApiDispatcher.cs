@@ -40,26 +40,27 @@ namespace Noel.Common.Http
         public string CallMethod(string methodName, string methodType, string rawArgs)
         {
             var target = Factory();
-            cache.TryGetValue(MakeCacheKey(methodType, methodName), out var method);
-
-            switch (methodType)
+            if (cache.TryGetValue(MakeCacheKey(methodType, methodName), out var method))
             {
-                case "GET":
-                    var args = rawArgs?.Split('&')
-                        .Select(x => x.Split('='))
-                        .ToDictionary(x => x[0], x => HttpUtility.UrlDecode(x[1]));
+                switch (methodType)
+                {
+                    case "GET":
+                        var args = rawArgs?.Split('&')
+                            .Select(x => x.Split('='))
+                            .ToDictionary(x => x[0], x => HttpUtility.UrlDecode(x[1]));
 
-                    var typeArgs = method.GetParameters()
-                        .Select((p, i) => Convert.ChangeType(args[p.Name], p.ParameterType))
-                        .ToArray();
+                        var typeArgs = method.GetParameters()
+                            .Select((p, i) => Convert.ChangeType(args[p.Name], p.ParameterType))
+                            .ToArray();
 
-                    var result = method.Invoke(target, typeArgs);
-                    return JsonConvert.SerializeObject(result, camelCase);
-                case "POST":
-                    var param = method.GetParameters().First().ParameterType;
-                    var obj = JsonConvert.DeserializeObject(rawArgs, param);
-                    method.Invoke(target, new[] { obj });
-                    return null;
+                        var result = method.Invoke(target, typeArgs);
+                        return JsonConvert.SerializeObject(result, camelCase);
+                    case "POST":
+                        var param = method.GetParameters().First().ParameterType;
+                        var obj = JsonConvert.DeserializeObject(rawArgs, param);
+                        method.Invoke(target, new[] { obj });
+                        return null;
+                }
             }
 
             throw new Exception($"Invalid method {methodType} '{methodName}'");

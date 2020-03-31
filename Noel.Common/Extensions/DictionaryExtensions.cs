@@ -11,4 +11,12 @@ public static class DictionaryExtensions
 
         return defaultVal;
     }
+
+    public static TValue Establish<TKey, TValue>(this Dictionary<TKey, TValue> self, TKey key) where TValue : new()
+    {
+        if (!self.TryGetValue(key, out var value))
+            self[key] = value = new TValue();
+
+        return value;
+    }
 }

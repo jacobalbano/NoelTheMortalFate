@@ -49,6 +49,12 @@
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Config\DomainConfigAttribute.cs" />
     <Compile Include="Config\Domains\GameConfig.cs" />
+    <Compile Include="Data\Instructions\CopyInstruction.cs" />
+    <Compile Include="Data\Instructions\SkipInstruction.cs" />
+    <Compile Include="Data\PatchableFile.cs" />
+    <Compile Include="Data\PatchableString.cs" />
+    <Compile Include="Data\PatchInstruction.cs" />
+    <Compile Include="Data\SeasonInfo.cs" />
     <Compile Include="EmbeddedFile.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
@@ -56,6 +62,11 @@
     <Compile Include="Http\Attributes.cs" />
     <Compile Include="Http\SimpleHTTPApiDispatcher.cs" />
     <Compile Include="Http\SimpleHTTPServer.cs" />
+    <Compile Include="JsonRoute\ExtractVisitor.cs" />
+    <Compile Include="JsonRoute\Route.cs" />
+    <Compile Include="JsonRoute\Route.Point.cs" />
+    <Compile Include="JsonRoute\Route.Predicate.cs" />
+    <Compile Include="JsonRoute\RouteContext.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Logging\Endpoints\ConsoleEndpoint.cs" />
     <Compile Include="Logging\Endpoints\FileEndpoint.cs" />
