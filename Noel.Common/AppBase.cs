@@ -12,17 +12,26 @@ namespace Noel.Common
 
         public static Logger Logger { get; private set;  }
 
-        public virtual void AppMain(string[] args)
+        public void Run(string[] args)
         {
             if (Environment != null)
                 throw new Exception("AppBase<TApp> must be initialized as a singleton");
 
-            if (args.Any())
-                System.Environment.CurrentDirectory = args[0];
+            Environment = new NoelEnvironment(args.FirstOrDefault() ?? ".");
+            Logger = Environment.Logger;
 
-            Environment = new NoelEnvironment(out var logger);
-            Logger = logger;
+            try
+            {
+                AppMain();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+                throw;
+            }
         }
+
+        public abstract void AppMain();
 
         public void Dispose()
         {

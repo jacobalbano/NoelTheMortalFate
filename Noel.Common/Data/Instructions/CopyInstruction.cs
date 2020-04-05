@@ -10,13 +10,13 @@ namespace Noel.Common.Data.Instructions
     {
         public int LineNumber { get; set; }
 
-        public override void Apply(PatchableFile currentFile, PatchableString currentString, int currentLine)
+        public override void Apply(TranslationFile currentFile, TranslationString currentString, int currentLine)
         {
             if (LineNumber >= currentFile.Strings.Length)
                 throw new IndexOutOfRangeException($"Attempted to copy from a string that was out of range (index {LineNumber})");
 
             var fromString = currentFile.Strings[LineNumber];
-            currentString.English = fromString.English;
+            currentString.PatchValue = fromString.PatchValue;
         }
     }
 }

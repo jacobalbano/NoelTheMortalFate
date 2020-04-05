@@ -2,6 +2,7 @@
 using Noel.Common.Config;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,21 +15,17 @@ namespace Noel.Launcher
         static void Main(string[] args)
         {
             using (var program = new Launcher())
-                program.AppMain(args);
-
-            Console.ReadKey();
+                program.Run(args);
         }
 
-        public override void AppMain(string[] args)
+        public override void AppMain()
         {
-            base.AppMain(args);
-            foreach (var chap in Environment.Seasons)
+            var xnaCfg = Environment.Config.Get<XnaAppConfig>();
+            using (var app = new XnaApp(xnaCfg))
             {
-                var titlePath = Path.Combine(chap.FullDataFolderPath, "img/titles1/title.png");
-                if (!File.Exists(titlePath))
-                    titlePath = "<not found>";
-
-                Logger.WriteLine("{0}: {1}", chap.Number, titlePath);
+                app.Run();
+                if (app.ChosenGamePath != null)
+                    Process.Start(app.ChosenGamePath);
             }
         }
     }

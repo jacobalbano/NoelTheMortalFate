@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Noel.Common.Data
+namespace Noel.Common.Data.Instructions
 {
     [JsonConverter(typeof(Converter))]
     public abstract class PatchInstruction
     {
-        public virtual void Apply(PatchableFile currentFile, PatchableString currentString, int currentLine)
+        public virtual void Apply(TranslationFile currentFile, TranslationString currentString, int currentLine)
         {
         }
 

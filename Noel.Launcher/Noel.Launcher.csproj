@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FNA">
+      <HintPath>lib\FNA.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,17 +46,77 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FNA\Camera.cs" />
+    <Compile Include="FNA\GameCard.cs" />
+    <Compile Include="FNA\MenuScene.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XnaApp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="lib\FNA.dll.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Noel.Common\Noel.Common.csproj">
       <Project>{DC759BC3-4182-4BAC-8C0D-367D7C6806F9}</Project>
       <Name>Noel.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\FNA.dll" />
+    <ContentWithTargetPath Include="lib\freetype6.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>freetype6.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libjpeg-9.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libjpeg-9.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libogg.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libogg.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libpng16-16.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libpng16-16.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libtheora.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libtheora.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libtheoraplay.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libtheoraplay.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libvorbis.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libvorbis.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\libvorbisfile.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libvorbisfile.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\MojoShader.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>MojoShader.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>SDL2.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\SDL2_image.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>SDL2_image.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\soft_oal.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>soft_oal.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\zlib1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>zlib1.dll</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

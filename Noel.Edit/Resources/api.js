@@ -2,14 +2,14 @@
 	"use strict";
 	
 	return {
-		listSeasons,
+		getFiletree,
 
 		getFile,
 		saveFile,
 	};
 	
-	function listSeasons() {
-		return httpGet('/api/Seasons');
+	function getFiletree() {
+		return httpGet('/api/Filetree');
 	}
 
 	async function getFile(seasonNum, filename) {
@@ -17,7 +17,7 @@
 		if (filename == undefined) throw 'arg-null: filename';
 
 		//	massage data to fit HOT
-		const file = await httpGet('/api/Strings', { seasonNum, filename });
+		const file = await httpGet('/api/TranslationFile', { seasonNum, filename });
 		return {
 			file: file,
 			isError: false,
@@ -27,14 +27,14 @@
 
 	function saveFile(file) {
 		if (file == undefined) throw 'arg-null: file';
-		return httpPost('/api/Strings', file);
+		return httpPost('/api/TranslationFile', file);
 	}
 	
 	async function httpGet(route, args) {
 		if (args !== undefined)
-			args = '?' + Object.keys(args).map(function (key) {
-				return encodeURIComponent(key) + '=' + encodeURIComponent(args[key]);
-			}).join('&');
+			args = '?' + Object.keys(args)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(args[key]))
+				.join('&');
 
 		var result = await fetch(window.location + route + (args || ''));
 		if (result.status == 500) {

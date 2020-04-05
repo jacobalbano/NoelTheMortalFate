@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Noel.Common\Noel.Common.csproj">
+      <Project>{DC759BC3-4182-4BAC-8C0D-367D7C6806F9}</Project>
+      <Name>Noel.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

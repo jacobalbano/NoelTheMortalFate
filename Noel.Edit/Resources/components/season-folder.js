@@ -4,7 +4,8 @@
         return {
             number: 0,
             files: [],
-            filter: ''
+            filter: '',
+            expanded: false
         };
     },
 
@@ -15,12 +16,12 @@
 		}
 	},
     template: `
-    <div v-if="filteredFiles.length > 0">
-	    <p class="menu-list">Season {{number}}</p>
-	    <ul class="menu-list">
+    <li v-if="filteredFiles.length > 0">
+	    <a @click="expanded = !expanded">Season {{number}}</a>
+	    <ul v-if="expanded" class="menu-list">
 		    <li v-for="file in filteredFiles" @click="$emit('file-clicked', number, file)">
                 <a>{{file}}</a>
             </li>
 	    </ul>
-	</div>`
+	</li>`
 });

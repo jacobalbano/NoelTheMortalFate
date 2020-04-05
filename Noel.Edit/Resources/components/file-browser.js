@@ -3,13 +3,13 @@
     data: function () {
         return {
             number: 0,
-            folders: [],
+            filetree: [],
 			fileFilter: '',
         };
     },
 	
 	created: async function() {
-		this.folders = await api.listSeasons();
+		this.filetree = await api.getFiletree();
 	},
 
     template: `
@@ -24,13 +24,14 @@
 			</p>
 			<hr/>
 			<aside class="menu">
-				<season-folder v-for="folder in folders"
-					:number="folder.number"
-					@file-clicked="$emit('file-clicked', ...arguments)"
-					:files="folder.files"
-					:filter="fileFilter"
-							
-				></season-folder>
+				<ul class="menu-list">
+					<season-folder v-for="folder in filetree"
+						:number="folder.number"
+						@file-clicked="$emit('file-clicked', ...arguments)"
+						:files="folder.files"
+						:filter="fileFilter"
+					></season-folder>
+				</ul>
 			</aside>
 		</div>
 	</div>`

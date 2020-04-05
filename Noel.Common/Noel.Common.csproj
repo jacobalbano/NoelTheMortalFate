@@ -46,27 +46,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBase.cs" />
-    <Compile Include="Config\ConfigManager.cs" />
-    <Compile Include="Config\DomainConfigAttribute.cs" />
-    <Compile Include="Config\Domains\GameConfig.cs" />
+    <Compile Include="Cache\GameFileCache.cs" />
+    <Compile Include="Cache\TranslationFileCache.cs" />
+    <Compile Include="Cache\ConfigCache.cs" />
+    <Compile Include="Config\Attributes.cs" />
+    <Compile Include="Config\XnaAppConfig.cs" />
+    <Compile Include="EnvironmentDir.cs" />
+    <Compile Include="Config\ExtractFilterConfig.cs" />
+    <Compile Include="Config\GameDirectoryConfig.cs" />
     <Compile Include="Data\Instructions\CopyInstruction.cs" />
     <Compile Include="Data\Instructions\SkipInstruction.cs" />
-    <Compile Include="Data\PatchableFile.cs" />
-    <Compile Include="Data\PatchableString.cs" />
-    <Compile Include="Data\PatchInstruction.cs" />
-    <Compile Include="Data\SeasonInfo.cs" />
+    <Compile Include="Data\TranslationFile.cs" />
+    <Compile Include="Data\TranslationString.cs" />
+    <Compile Include="Data\Instructions\PatchInstruction.cs" />
     <Compile Include="EmbeddedFile.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="GameData\Season.cs" />
+    <Compile Include="Data\GameFile.cs" />
+    <Compile Include="Data\Season.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="Http\Attributes.cs" />
     <Compile Include="Http\SimpleHTTPApiDispatcher.cs" />
     <Compile Include="Http\SimpleHTTPServer.cs" />
-    <Compile Include="JsonRoute\ExtractVisitor.cs" />
-    <Compile Include="JsonRoute\Route.cs" />
-    <Compile Include="JsonRoute\Route.Point.cs" />
-    <Compile Include="JsonRoute\Route.Predicate.cs" />
-    <Compile Include="JsonRoute\RouteContext.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Logging\Endpoints\ConsoleEndpoint.cs" />
     <Compile Include="Logging\Endpoints\FileEndpoint.cs" />
@@ -75,11 +76,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\EnvFolders.txt" />
     <EmbeddedResource Include="Resources\Environment.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

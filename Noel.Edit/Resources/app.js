@@ -6,12 +6,12 @@
 
     tableSettings: {
 	    rowHeaders: true,
-	    colHeaders: ['Address', 'Meta', 'Japanese', 'English'],
+	    colHeaders: ['Address', 'Meta', 'Source value', 'Patch value'],
 	    columns: [
 		    { data: 'address' },
 		    { data: 'instructions'},
-		    { data: 'japanese', readOnly: true },
-		    { data: 'english' }
+		    { data: 'sourceValue', readOnly: true },
+		    { data: 'patchValue' }
 	    ],
 	    stretchH: 'last',
 	    comments: true,

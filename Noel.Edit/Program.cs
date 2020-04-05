@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Noel.Edit
 {
@@ -14,15 +15,17 @@ namespace Noel.Edit
         static void Main(string[] args)
         {
             using (var app = new Program())
-                app.AppMain(args);
+                app.Run(args);
         }
 
-        public override void AppMain(string[] args)
+        [STAThread]
+        public override void AppMain()
         {
-            base.AppMain(args);
-
             var myServer = new SimpleHTTPServer<EditApi>("http://localhost:8823/", "resources/");
-            Console.ReadKey();
+            
+            Application.EnableVisualStyles();
+            Application.Run(new Form1(myServer.Route));
+
             myServer.Stop();
         }
     }

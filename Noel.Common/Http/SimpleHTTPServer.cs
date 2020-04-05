@@ -1,7 +1,4 @@
-﻿// MIT License - Copyright (c) 2016 Can Güney Aksakalli
-// https://aksakalli.github.io/2014/02/24/simple-http-server-with-csparp.html
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +9,7 @@ using System.Threading;
 using System.Diagnostics;
 using Noel.Common;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Noel.Common.Http
 {
@@ -56,9 +54,7 @@ namespace Noel.Common.Http
                     HttpListenerContext context = listener.GetContext();
                     Process(context);
                 }
-                catch (Exception)
-                {
-                }
+                catch { }
             }
         }
 
@@ -98,10 +94,8 @@ namespace Noel.Common.Http
                         case "POST":
                             using (var body = context.Request.InputStream)
                             using (var reader = new StreamReader(body, context.Request.ContentEncoding))
-                            {
                                 dispatcher.CallMethod(name, "POST", reader.ReadToEnd());
-                                response.StatusCode = 204;
-                            }
+                            response.StatusCode = 204;
                             break;
                         default:
                             response.StatusCode = 404;
@@ -122,11 +116,11 @@ namespace Noel.Common.Http
         private void HandleFileRequest(HttpListenerContext context, string requestUrl)
         {
             var filename = EmbedRootDir + requestUrl;
-            if (EmbeddedFile.Exists(filename))
+            if (FileExists(filename))
             {
                 try
                 {
-                    using (var input = EmbeddedFile.GetStream(filename))
+                    using (var input = GetStream(filename))
                     {
                         context.Response.ContentType = _mimeTypeMappings.TryGetValue(Path.GetExtension(filename), out var mime) ? mime : "application/octet-stream";
                         context.Response.ContentLength64 = input.Length;
@@ -155,9 +149,26 @@ namespace Noel.Common.Http
             context.Response.OutputStream.Close();
         }
 
+        private bool FileExists(string filename)
+        {
+#if DEBUG
+            return File.Exists(Path.Combine(DebugResourcesDir, filename));
+#else
+            return EmbeddedFile.Exists(filename);
+#endif
+        }
+
+        private Stream GetStream(string filename)
+        {
+#if DEBUG
+            return File.OpenRead(Path.Combine(DebugResourcesDir, filename));
+#else
+            return EmbeddedFile.GetStream(filename);
+#endif
+        }
 
         private static readonly IDictionary<string, string> _mimeTypeMappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
-        #region extension to MIME type list
+#region extension to MIME type list
         {".asf", "video/x-ms-asf"},
         {".asx", "video/x-ms-asf"},
         {".avi", "video/x-msvideo"},
@@ -222,10 +233,21 @@ namespace Noel.Common.Http
         {".xml", "text/xml"},
         {".xpi", "application/x-xpinstall"},
         {".zip", "application/zip"},
-        #endregion
+#endregion
     };
         private readonly Thread serverThread;
         private HttpListener listener;
         private readonly SimpleHTTPApiDispatcher dispatcher;
+
+#if DEBUG
+        private string DebugResourcesDir => dbgProjectDir ?? (dbgProjectDir = FindProjectDir());
+        private string dbgProjectDir;
+        private static string FindProjectDir()
+        {
+            var exe= new FileInfo(Assembly.GetExecutingAssembly().Location);
+            var projectDir = exe.Directory.Parent.Parent;  //  up two from bin\debug
+            return Path.Combine(projectDir.FullName);
+        }
+#endif
     }
 }

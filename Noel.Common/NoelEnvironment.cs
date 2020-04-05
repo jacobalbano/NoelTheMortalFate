@@ -1,5 +1,6 @@
-﻿using Noel.Common.Config;
-using Noel.Common.GameData;
+﻿using Noel.Common.Cache;
+using Noel.Common.Config;
+using Noel.Common.Data;
 using Noel.Common.Logging.Endpoints;
 using System;
 using System.Collections.Generic;
@@ -13,36 +14,58 @@ namespace Noel.Common
     {
         public static NoelEnvironment Instance { get; private set; }
 
+        public string RootDirectory { get; }
+
+        public Logger Logger { get; }
+
         public IReadOnlyList<Season> Seasons { get; }
 
-        public NoelEnvironment(out Logger logger)
-        {
-            bool firstRun = EstablishEnvironment();
-            logger = CreateFileLogger();
+        public TranslationFileCache TranslationFileCache { get; }
 
-            using (logger.Context("Initializing environment"))
+        public GameFileCache GameFileCache { get; }
+
+        public ConfigCache Config { get; }
+
+        public NoelEnvironment(string environmentRoot)
+        {
+            RootDirectory = Path.GetFullPath(environmentRoot);
+            bool firstRun = EstablishEnvironment();
+            Logger = CreateFileLogger();
+
+            using (Logger.Context("Initializing environment"))
             {
                 try
                 {
                     if (Instance != null)
                         throw new Exception("Environment must be initialized as a singleton");
+                    Instance = this;
 
                     if (firstRun)
-                        ConfigManager.Establish();
-                    else
-                        ConfigManager.Load();
-                    
-                    //Validate();
+                    {
+                        foreach (var dir in EnvironmentDir.Directories())
+                            Directory.CreateDirectory(dir);
+                    }
+
+                    Config = new ConfigCache(firstRun);
+
+                    var gameConfig = Config.Get<GameDirectoryConfig>();
+                    Seasons = gameConfig.Seasons
+                        .Select(x => new Season(x.Number, x.Root))
+                        .ToList();
+
+                    TranslationFileCache = new TranslationFileCache(this);
+                    GameFileCache = new GameFileCache(this);
+
                 }
                 catch (Exception e)
                 {
-                    logger.LogException(e);
+                    Logger.LogException(e);
+                    Logger.LogLine("Abort");
+                    throw new Exception("Exception occurred during environment initialization", e);
                 }
 
-                logger.LogLine("done");
+                Logger.LogLine("Done");
             }
-
-            Instance = this;
         }
 
         private Logger CreateFileLogger()
@@ -50,46 +73,23 @@ namespace Noel.Common
             var filename = DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + ".txt";
             return new Logger(
                 new ConsoleEndpoint(),
-                new FileEndpoint(Path.Combine("logs", filename))
+                new FileEndpoint(Path.Combine(RootDirectory, "logs", filename))
             ); ;
-        }
-
-        private void Validate()
-        {
-            foreach (var chapter in Seasons)
-            {
-                try
-                {
-                    if (!Directory.Exists(chapter.FullFolderPath))
-                        throw new Exception("Chapter root does not exist");
-
-                    if (!File.Exists(chapter.FullExecutablePath))
-                        throw new Exception("Game.exe does not exist");
-
-                    if (!Directory.Exists(chapter.FullDataFolderPath))
-                        throw new Exception("Data root does not exist");
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"Error encountered while validating folder structure for chapter {chapter.Number}", e);
-                }
-            }
         }
 
         public void Dispose()
         {
+            (Config as IDisposable).Dispose();
             Instance = null;
         }
 
-        private static bool EstablishEnvironment()
+        private bool EstablishEnvironment()
         {
-            if (File.Exists("Environment.txt"))
+            var envPath = Path.Combine(RootDirectory, "Environment.txt");
+            if (File.Exists(envPath))
                 return false;
 
-            File.WriteAllText("Environment.txt", EmbeddedFile.GetTextFile("Resources/Environment.txt"));
-
-            foreach (var dir in EmbeddedFile.GetTextLines("Resources/EnvFolders.txt"))
-                Directory.CreateDirectory(dir);
+            File.WriteAllText(envPath, EmbeddedFile.GetTextFile("Resources/Environment.txt"));
 
             return true;
         }

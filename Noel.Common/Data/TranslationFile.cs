@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Noel.Common.Data
 {
-    public sealed class PatchableFile
+    public sealed class TranslationFile
     {
         public int SeasonNum { get; set; }
 
-        public string Filename {get; set; }
+        public string Filename { get; set; }
 
-        public PatchableString[] Strings { get; set; }
+        public TranslationString[] Strings { get; set; }
     }
 }
