@@ -50,7 +50,7 @@ namespace Noel.Setup
                     if (e.ProgressPercentage >= lastReport)
                     {
                         lastReport += 10;
-                        Logger.LogLine(e.ProgressPercentage);
+                        Logger.LogLine($"{e.ProgressPercentage}% downloaded ({e.BytesReceived / 1000 / 1000}/{e.TotalBytesToReceive / 100 / 100}MB)");
                     }
                 };
 
