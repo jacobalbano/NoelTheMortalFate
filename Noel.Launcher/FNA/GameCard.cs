@@ -28,8 +28,9 @@ namespace Noel.Launcher.FNA
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            TowardsWithDecay(ref ScaleAlpha, IsSelected ? 0.01f : 0, 0.4f);
-            spriteBatch.Draw(Texture, new Vector2(X, Y), null, Color.White, Angle, new Vector2(Texture.Width * 0.5f, Texture.Height * 0.5f), Scale + ScaleAlpha, SpriteEffects.None, 0);
+            TowardsWithDecay(ref scaleAlpha, IsSelected ? 0.01f : 0, 0.4f);
+            var sine = (float)(-Math.Cos(Math.PI * (t += 0.04f)) / 2 + .5);
+            spriteBatch.Draw(Texture, new Vector2(X, Y), null, Color.White, Angle, new Vector2(Texture.Width * 0.5f, Texture.Height * 0.5f), Scale + (scaleAlpha * sine), SpriteEffects.None, 0);
         }
 
         internal bool IsMouseOver(Vector2 worldCoords)
@@ -45,11 +46,12 @@ namespace Noel.Launcher.FNA
             return bounds.Contains((int)worldCoords.X, (int)worldCoords.Y);
         }
 
-        float ScaleAlpha;
-
         private static void TowardsWithDecay(ref float target, float to, float amount = 0.1f)
         {
             target += (to - target) * amount;
         }
+
+        private float scaleAlpha;
+        private float t;
     }
 }

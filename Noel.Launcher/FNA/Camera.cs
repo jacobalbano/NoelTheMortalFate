@@ -10,6 +10,6 @@ namespace Noel.Launcher.FNA
     {
         public float X { get; set; }
 
-        public float Y { get; set; } = -100;
+        public float Y { get; set; }
     }
 }

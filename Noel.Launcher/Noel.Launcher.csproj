@@ -49,7 +49,7 @@
     <Compile Include="FNA\Camera.cs" />
     <Compile Include="FNA\GameCard.cs" />
     <Compile Include="FNA\MenuScene.cs" />
-    <Compile Include="Launcher.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XnaApp.cs" />
   </ItemGroup>

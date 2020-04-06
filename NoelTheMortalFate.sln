@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Common", "Noel.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Edit", "Noel.Edit\Noel.Edit.csproj", "{96886BDC-6076-4B4A-9602-6C9DF5FF598B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Setup", "Noel.Download\Noel.Setup.csproj", "{AE151D66-6517-48C2-813E-9C621DB4A288}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{96886BDC-6076-4B4A-9602-6C9DF5FF598B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96886BDC-6076-4B4A-9602-6C9DF5FF598B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96886BDC-6076-4B4A-9602-6C9DF5FF598B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE151D66-6517-48C2-813E-9C621DB4A288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE151D66-6517-48C2-813E-9C621DB4A288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE151D66-6517-48C2-813E-9C621DB4A288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE151D66-6517-48C2-813E-9C621DB4A288}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

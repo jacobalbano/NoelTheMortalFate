@@ -46,7 +46,9 @@ namespace Noel.Common.Cache
             }
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         void IDisposable.Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             var configDir = EnvironmentDir.ConfigDirectory;
             foreach (var item in configCache)

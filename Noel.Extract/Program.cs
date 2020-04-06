@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Noel.Extract
 {
-    class Extract : AppBase<Extract>
+    class Program : AppBase<Program>
     {
         static void Main(string[] args)
         {
-            using (var program = new Extract())
+            using (var program = new Program())
                 program.Run(args);
         }
 
@@ -34,6 +34,7 @@ namespace Noel.Extract
                             Logger.WriteLine("({1}/{2})\t{0}", file, i + 1, season.DataFilenames.Count);
 
                             var gameFile = Environment.GameFileCache.Get(season.Number, file);
+                            Environment.Backup.Add(gameFile);
                             var extract = gameFile.Extract(pathFilters);
                             Environment.TranslationFileCache.Update(extract);
                         }

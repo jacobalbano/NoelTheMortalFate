@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Noel.Patch
 {
-    class Patch : AppBase<Patch>
+    class Program : AppBase<Program>
     {
         static void Main(string[] args)
         {
-            using (var program = new Patch())
+            using (var program = new Program())
                 program.Run(args);
         }
 

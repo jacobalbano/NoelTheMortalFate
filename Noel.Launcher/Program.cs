@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Noel.Launcher
 {
-    class Launcher : AppBase<Launcher>
+    class Program : AppBase<Program>
     {
         static void Main(string[] args)
         {
-            using (var program = new Launcher())
+            using (var program = new Program())
                 program.Run(args);
         }
 

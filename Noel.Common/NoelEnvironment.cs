@@ -24,37 +24,46 @@ namespace Noel.Common
 
         public GameFileCache GameFileCache { get; }
 
+        public Backup Backup { get; }
+
         public ConfigCache Config { get; }
 
         public NoelEnvironment(string environmentRoot)
         {
+            if (Instance != null)
+                throw new Exception("Environment must be initialized as a singleton");
+            Instance = this;
+
             RootDirectory = Path.GetFullPath(environmentRoot);
             bool firstRun = EstablishEnvironment();
-            Logger = CreateFileLogger();
+            if (firstRun)
+            {
+                foreach (var dir in EnvironmentDir.Directories())
+                    Directory.CreateDirectory(dir);
+            }
 
+            Logger = CreateFileLogger();
             using (Logger.Context("Initializing environment"))
             {
                 try
                 {
-                    if (Instance != null)
-                        throw new Exception("Environment must be initialized as a singleton");
-                    Instance = this;
-
-                    if (firstRun)
-                    {
-                        foreach (var dir in EnvironmentDir.Directories())
-                            Directory.CreateDirectory(dir);
-                    }
-
                     Config = new ConfigCache(firstRun);
 
                     var gameConfig = Config.Get<GameDirectoryConfig>();
                     Seasons = gameConfig.Seasons
+                        .Where(x => Directory.Exists(Path.Combine(EnvironmentDir.SeasonsDirectory, x.Root)))
                         .Select(x => new Season(x.Number, x.Root))
                         .ToList();
 
+                    foreach (var season in Seasons)
+                    {
+                        Directory.CreateDirectory(season.FullWorkingFolderPath);
+                        Directory.CreateDirectory(season.FullBackupFolderPath);
+                    }
+
                     TranslationFileCache = new TranslationFileCache(this);
                     GameFileCache = new GameFileCache(this);
+                    Backup = new Backup();
 
                 }
                 catch (Exception e)

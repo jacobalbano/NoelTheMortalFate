@@ -24,7 +24,7 @@ namespace Noel.Common.Data
         internal Season(int number, string relativeFolderPath)
         {
             Number = number;
-            FullFolderPath = Path.Combine(EnvironmentDir.RootDirectory, relativeFolderPath);
+            FullFolderPath = Path.Combine(EnvironmentDir.SeasonsDirectory, relativeFolderPath);
         }
 
         private List<string> GetDataFilenames()

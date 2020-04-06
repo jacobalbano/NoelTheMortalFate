@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBase.cs" />
+    <Compile Include="Backup.cs" />
     <Compile Include="Cache\GameFileCache.cs" />
     <Compile Include="Cache\TranslationFileCache.cs" />
     <Compile Include="Cache\ConfigCache.cs" />

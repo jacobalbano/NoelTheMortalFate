@@ -19,12 +19,15 @@ namespace Noel.Common
         
         public static string LogDirectory => Path.Combine(RootDirectory, "logs");
 
+        public static string SeasonsDirectory => Path.Combine(RootDirectory, "seasons");
+
         public static IEnumerable<string> Directories()
         {
             yield return ConfigDirectory;
             yield return WorkingDirectory;
             yield return BackupDirectory;
             yield return LogDirectory;
+            yield return SeasonsDirectory;
         }
     }
 }

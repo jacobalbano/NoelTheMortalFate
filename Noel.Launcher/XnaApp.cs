@@ -20,12 +20,12 @@ namespace Noel.Launcher
         public XnaApp(XnaAppConfig xnaCfg)
         {
             XnaCfg = xnaCfg;
-            Graphics = new GraphicsDeviceManager(this)
+            new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = xnaCfg.InternalResolutionX,
-                PreferredBackBufferHeight = xnaCfg.InternalResolutionY,
+                PreferredBackBufferWidth = xnaCfg.WindowResolutionX,
+                PreferredBackBufferHeight = xnaCfg.WindowResolutionY,
                 SynchronizeWithVerticalRetrace = true
-            };
+            }.ApplyChanges();
 
             Window.AllowUserResizing = true;
             IsMouseVisible = true;
@@ -49,7 +49,7 @@ namespace Noel.Launcher
         protected override void Initialize()
         {
             base.Initialize();
-            Target = new RenderTarget2D(GraphicsDevice, XnaCfg.WindowResolutionX, XnaCfg.WindowResolutionY);
+            Target = new RenderTarget2D(GraphicsDevice, XnaCfg.InternalResolutionX, XnaCfg.InternalResolutionY);
         }
 
         protected override void LoadContent()
@@ -62,7 +62,7 @@ namespace Noel.Launcher
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            scene.Update(gameTime);
+            scene.Update();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -73,7 +73,7 @@ namespace Noel.Launcher
             {
                 GraphicsDevice.SetRenderTarget(Target);
                 GraphicsDevice.Clear(Color.Black);
-                scene.Draw(gameTime, spriteBatch);
+                scene.Draw(spriteBatch);
             }
 
             //  Draw buffer to screen, transforming it to fit the window size
@@ -112,7 +112,6 @@ namespace Noel.Launcher
 
         private SpriteBatch spriteBatch;
         private RenderTarget2D Target;
-        private readonly GraphicsDeviceManager Graphics;
         private readonly MenuScene scene;
     }
 }
