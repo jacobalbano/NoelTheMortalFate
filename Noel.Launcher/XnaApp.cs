@@ -19,6 +19,7 @@ namespace Noel.Launcher
 
         public XnaApp(XnaAppConfig xnaCfg)
         {
+            Window.Title = "Noel the Mortal Fate Launcher";
             XnaCfg = xnaCfg;
             new GraphicsDeviceManager(this)
             {
@@ -36,7 +37,7 @@ namespace Noel.Launcher
                 xnaCfg.WindowResolutionY = Window.ClientBounds.Height;
             };
 
-            scene = new MenuScene();
+            scene = new MenuScene(XnaCfg.InternalResolutionX, XnaCfg.InternalResolutionY);
         }
 
         public void Quit(string gamePath)
@@ -62,7 +63,15 @@ namespace Noel.Launcher
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            scene.Update();
+            if (!IsActive)
+                return;
+
+            scene.Update(GetVirtualRes(
+                Target.Width,
+                Target.Height,
+                GraphicsDevice.Viewport.Width,
+                GraphicsDevice.Viewport.Height
+            ));
         }
 
         protected override void Draw(GameTime gameTime)

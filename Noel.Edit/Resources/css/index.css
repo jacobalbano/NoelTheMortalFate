@@ -5,6 +5,10 @@ body {
     overflow: hidden !important;
 }
 
+.tabs ul {
+    min-height: 75px;
+}
+
 #vue-app {
     display: flex;
     width: 100%;
