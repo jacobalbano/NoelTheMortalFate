@@ -5,6 +5,10 @@ body {
     overflow: hidden !important;
 }
 
+.center {
+    text-align: center;
+}
+
 .tabs ul {
     min-height: 75px;
 }

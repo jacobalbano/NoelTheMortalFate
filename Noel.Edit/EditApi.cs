@@ -27,6 +27,30 @@ namespace Noel.Edit
             return NoelEnvironment.Instance.TranslationFileCache.Get(seasonNum, filename);
         }
 
+        [HttpGet]
+        public List<object> FullTextSearch(string term)
+        {
+            term = term.ToUpperInvariant();
+
+            var result = new List<object>();
+            if (string.IsNullOrWhiteSpace(term))
+                return result;
+
+            foreach (var season in NoelEnvironment.Instance.Seasons)
+            {
+                foreach (var filename in season.TranslationFilenames)
+                {
+                    var cache = NoelEnvironment.Instance.TranslationFileCache;
+                    var workingFile = cache.Get(season.Number, filename);
+                    result.AddRange(workingFile.Strings.SelectMany(x => new[] { x.SourceValue, x.PatchValue })
+                        .Where(x => x != null && x.ToUpperInvariant().Contains(term))
+                        .Select(x => new { SeasonNum = season.Number, Filename = filename, Match = x }));
+                }
+            }
+
+            return result;
+        }
+
         [HttpPost]
         public void TranslationFile(TranslationFile file)
         {

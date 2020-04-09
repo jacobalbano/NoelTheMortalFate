@@ -19,11 +19,12 @@ namespace Noel.Patch
         {
             using (Logger.Context("Patching game data:"))
             {
-                int totalLinesChanged = 0;
+                int totalStrings = 0;
                 foreach (var season in Environment.Seasons)
                 {
                     using (Logger.Context($"Season {season.Number}"))
                     {
+                        int seasonTotal = 0;
                         foreach (var file in season.TranslationFilenames.Progress())
                         {
                             var transFile = Environment.TranslationFileCache.Get(season.Number, file);
@@ -32,15 +33,18 @@ namespace Noel.Patch
 
                             if (linesChanged > 0)
                             {
-                                totalLinesChanged += linesChanged;
-                                Logger.LogLine($"Patched {linesChanged} strings in {file}");
+                                seasonTotal += linesChanged;
                                 Environment.GameFileCache.Update(gameFile);
+                                Logger.LogLine($"{linesChanged} strings patched from {file}\t({file.Number}/{file.Total} files processed)");
                             }
                         }
+
+                        totalStrings += seasonTotal;
+                        Logger.LogLine($"{seasonTotal} strings patched into season");
                     }
                 }
 
-                Logger.LogLine($"Patched {totalLinesChanged} strings in total");
+                Logger.LogLine($"{totalStrings} strings patched across all seasons");
                 Logger.LogLine("Done");
             }
         }

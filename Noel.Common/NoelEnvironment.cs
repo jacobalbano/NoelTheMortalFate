@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Noel.Common
@@ -76,7 +77,7 @@ namespace Noel.Common
 
         private Logger CreateFileLogger()
         {
-            var filename = DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + ".txt";
+            var filename = DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + "_" + Assembly.GetEntryAssembly().GetName().Name + "_.txt";
             return new Logger(
                 new ConsoleEndpoint(),
                 new FileEndpoint(Path.Combine(RootDirectory, "logs", filename))

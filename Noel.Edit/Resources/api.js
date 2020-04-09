@@ -3,6 +3,7 @@
 	
 	return {
 		getFiletree,
+		getFullTextSearch,
 
 		getFile,
 		saveFile,
@@ -10,6 +11,10 @@
 	
 	function getFiletree() {
 		return httpGet('/api/Filetree');
+	}
+
+	function getFullTextSearch(term) {
+		return httpGet('/api/FullTextSearch', { term });
 	}
 
 	async function getFile(seasonNum, filename) {

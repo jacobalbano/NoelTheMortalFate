@@ -25,6 +25,7 @@ namespace Noel.Extract
         {
             using (Logger.Context("Extracting game data:"))
             {
+                int totalStrings = 0;
                 using (var backup = Environment.BackupCache.CreateBackup())
                 {
                     var config = Environment.Config.Get<ExtractFilterConfig>();
@@ -33,23 +34,31 @@ namespace Noel.Extract
                     {
                         using (Logger.Context($"Season {season.Number}"))
                         {
+                            int seasonTotal = 0;
                             foreach (var item in season.DataFilenames.Progress())
                             {
-                                Logger.LogLine($"({item.Number}/{item.Total})\t{item}");
-
                                 var gameFile = Environment.GameFileCache.Get(season.Number, item);
                                 var extract = gameFile.Extract(pathFilters);
                                 if (extract.Strings.Any())
                                 {
+                                    seasonTotal += extract.Strings.Length;
                                     Environment.TranslationFileCache.Update(extract);
                                     backup.Add(gameFile);
+
+                                    Logger.LogLine($"{extract.Strings.Length} strings extracted from {item}\t({item.Number}/{item.Total} files processed)");
                                 }
                             }
+
+                            totalStrings += seasonTotal;
+                            Logger.LogLine($"{seasonTotal} strings extracted from season");
                         }
                     }
+
+                    Logger.LogLine($"{totalStrings} strings extracted across all seasons");
+                    Logger.LogLine("Saving backup file...");
                 }
 
-                Logger.LogLine("Extract complete");
+                Logger.LogLine("Done");
             }
         }
     }

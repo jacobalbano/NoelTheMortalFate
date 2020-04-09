@@ -118,9 +118,9 @@ namespace Noel.Common.Data
             private static bool OpEquals(string a, string b) => a == b;
             private static bool OpNotEquals(string a, string b) => a != b;
 
-            private Func<string, string, bool> Op;
-            private string Key;
-            private string compareString;
+            private readonly Func<string, string, bool> Op;
+            private readonly string Key;
+            private readonly string compareString;
             private static readonly Regex conditionMatch = new Regex(@"(?<Key>.+?)\s*(?<Op>\!?\=)(?<CompareTo>.+)", RegexOptions.Compiled);
         }
     }
