@@ -15,11 +15,9 @@ namespace Noel.Common.Data
         public string FullJsonFolderPath => Path.Combine(FullResourceFolderPath, "data");
         public string FullExecutablePath => Path.Combine(FullFolderPath, "Game.exe");
         public string FullWorkingFolderPath => Path.Combine(EnvironmentDir.WorkingDirectory, Number.ToString());
-        public string FullBackupFolderPath => Path.Combine(EnvironmentDir.BackupDirectory, Number.ToString());
 
         public IReadOnlyList<string> DataFilenames => dataFilenames ?? (dataFilenames = GetDataFilenames());
         public IReadOnlyList<string> TranslationFilenames => translationFilenames ?? (translationFilenames = GetTranslationFilenames());
-        public IReadOnlyList<string> BackupFilenames => backupFilenames ?? (backupFilenames = GetBackupFilenames());
 
         internal Season(int number, string relativeFolderPath)
         {
@@ -34,14 +32,6 @@ namespace Noel.Common.Data
                 .ToList();
         }
 
-        private List<string> GetBackupFilenames()
-        {
-            Directory.CreateDirectory(FullBackupFolderPath);
-            return Directory.EnumerateFiles(FullBackupFolderPath, "*.json")
-                .Select(Path.GetFileNameWithoutExtension)
-                .ToList();
-        }
-
         private List<string> GetTranslationFilenames()
         {
             Directory.CreateDirectory(FullWorkingFolderPath);
@@ -50,6 +40,6 @@ namespace Noel.Common.Data
                 .ToList();
         }
 
-        private List<string> dataFilenames, translationFilenames, backupFilenames;
+        private List<string> dataFilenames, translationFilenames;
     }
 }

@@ -9,7 +9,7 @@ namespace Noel.Common.Config
     [Config]
     public class ExtractFilterConfig
     {
-        public string[] PathFilters { get; } = new[]
+        public string[] PathFilters { get; set; } = new[]
         {
             "events[].pages[].list[].parameters[]"
         };

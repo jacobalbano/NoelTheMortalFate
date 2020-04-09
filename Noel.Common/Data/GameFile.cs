@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Noel.Common.Config;
 using Noel.Common.Data;
+using Noel.Common.Data.Instructions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace Noel.Common.Data
             JsonData = jsonData;
         }
 
-        public TranslationFile Extract(HashSet<string> pathFilters)
+        public TranslationFile Extract(PathFilter[] pathFilters)
         {
             return new TranslationFile
             {
@@ -35,7 +36,7 @@ namespace Noel.Common.Data
             };
         }
 
-        private static IEnumerable<TranslationString> Explore(JToken obj, HashSet<string> pathFilters)
+        private static IEnumerable<TranslationString> Explore(JToken obj, PathFilter[] pathFilters)
         {
             if (obj.Type == JTokenType.Object)
             {
@@ -66,27 +67,44 @@ namespace Noel.Common.Data
                 var strVal = obj.Value<string>();
                 if (!string.IsNullOrEmpty(strVal))
                 {
-                    var path = new string(obj.Path.Where(x => !char.IsNumber(x)).ToArray());
-                    if (pathFilters.Contains(path))
+                    var roughPass = new string(obj.Path.Where(x => !char.IsNumber(x)).ToArray());
+                    if (pathFilters.Any(x => x.IsMatch(roughPass, obj)))
                         yield return new TranslationString { Address = obj.Path, SourceValue = strVal };
                 }
             }
         }
 
-        public void Patch(TranslationFile data)
+        public int Patch(TranslationFile data)
         {
-            for (int i = 0; i < data.Strings.Length; ++i)
+            var allStrings = data.Strings.ToDictionary(x => x.Address);
+
+            int patched = 0;
+            foreach (var str in data.Strings)
             {
-                var str = data.Strings[i];
+                bool skip = false;
                 foreach (var inst in str.Instructions)
-                    inst.Apply(data, str, i);
+                {
+                    if (inst is SkipInstruction)
+                        skip = true;
+
+                    inst.Apply(allStrings, str);
+                }
+
+                if (skip)
+                {
+
+                    continue;
+                }
 
                 if (string.IsNullOrEmpty(str.PatchValue))
                     continue;
 
                 var target = JsonData.SelectToken(str.Address);
                 target.Replace(str.PatchValue);
+                patched++;
             }
+
+            return patched;
         }
     }
 }

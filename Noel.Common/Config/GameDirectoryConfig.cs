@@ -7,7 +7,7 @@ namespace Noel.Common.Config
     [Config]
     public class GameDirectoryConfig
     {
-        public SeasonConfig[] Seasons { get; } = new[]
+        public SeasonConfig[] Seasons { get; set; } = new[]
         {
             new SeasonConfig { Number = 1, Root = @"noel_1d\noel_s1\", TitleImagePath = @"img\titles1\title.png", DownloadUrl = "http://www.gamemaga.jp/download_play/noel_1d.zip" },
             new SeasonConfig { Number = 2, Root = @"noel_2c\noel_s2a\", TitleImagePath = @"img\titles1\title2.png", DownloadUrl = "https://www.gamemaga.jp/download_play/noel_2c.zip" },

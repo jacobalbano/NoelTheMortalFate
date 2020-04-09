@@ -12,7 +12,7 @@ namespace Noel.Common.Data.Instructions
     [JsonConverter(typeof(Converter))]
     public abstract class PatchInstruction
     {
-        public virtual void Apply(TranslationFile currentFile, TranslationString currentString, int currentLine)
+        public virtual void Apply(Dictionary<string, TranslationString> allStrings, TranslationString currentString)
         {
         }
 

@@ -1,9 +1,12 @@
 ﻿using Noel.Common;
 using Noel.Common.Cache;
 using Noel.Common.Config;
+using Noel.Common.Data;
 using Noel.Common.Logging.Endpoints;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,27 +25,32 @@ namespace Noel.Extract
         {
             using (Logger.Context("Extracting game data:"))
             {
-                var config = Environment.Config.Get<ExtractFilterConfig>();
-                var pathFilters = new HashSet<string>(config.PathFilters);
-                foreach (var season in Environment.Seasons)
+                using (var backup = Environment.BackupCache.CreateBackup())
                 {
-                    using (Logger.Context("Season {0}", season.Number))
+                    var config = Environment.Config.Get<ExtractFilterConfig>();
+                    var pathFilters = config.PathFilters.Select(PathFilter.Parse).ToArray();
+                    foreach (var season in Environment.Seasons)
                     {
-                        for (int i = 0; i < season.DataFilenames.Count; ++i)
+                        using (Logger.Context($"Season {season.Number}"))
                         {
-                            var file = season.DataFilenames[i];
-                            Logger.WriteLine("({1}/{2})\t{0}", file, i + 1, season.DataFilenames.Count);
+                            foreach (var item in season.DataFilenames.Progress())
+                            {
+                                Logger.LogLine($"({item.Number}/{item.Total})\t{item}");
 
-                            var gameFile = Environment.GameFileCache.Get(season.Number, file);
-                            Environment.Backup.Add(gameFile);
-                            var extract = gameFile.Extract(pathFilters);
-                            Environment.TranslationFileCache.Update(extract);
+                                var gameFile = Environment.GameFileCache.Get(season.Number, item);
+                                var extract = gameFile.Extract(pathFilters);
+                                if (extract.Strings.Any())
+                                {
+                                    Environment.TranslationFileCache.Update(extract);
+                                    backup.Add(gameFile);
+                                }
+                            }
                         }
                     }
                 }
-            }
 
-            Logger.WriteLine("Extract complete");
+                Logger.LogLine("Extract complete");
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Noel.Common
     {
         public Logger(params ILoggerEndpoint[] endpoints)
         {
-            Endpoints = endpoints?.ToList() ?? throw new ArgumentNullException("endpoints");
+            Endpoints = endpoints?.ToList() ?? throw new ArgumentNullException(nameof(endpoints));
             ctx = new ContextImpl(this);
         }
 
@@ -24,11 +24,6 @@ namespace Noel.Common
             LogLine(section);
             depth++;
             return ctx;
-        }
-
-        public IDisposable Context(string section, params object[] args)
-        {
-            return Context(string.Format(section, args));
         }
 
         public void LogLine<T>(T message)
@@ -53,14 +48,9 @@ namespace Noel.Common
             }
         }
 
-        public void WriteLine(string message, params object[] args)
-        {
-            LogLine(string.Format(message, args));
-        }
-
         private class ContextImpl : IDisposable
         {
-            private Logger logger;
+            private readonly Logger logger;
 
             public ContextImpl(Logger logger)
             {

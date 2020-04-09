@@ -24,7 +24,7 @@ namespace Noel.Common
 
         public GameFileCache GameFileCache { get; }
 
-        public Backup Backup { get; }
+        public BackupCache BackupCache { get; }
 
         public ConfigCache Config { get; }
 
@@ -56,14 +56,11 @@ namespace Noel.Common
                         .ToList();
 
                     foreach (var season in Seasons)
-                    {
                         Directory.CreateDirectory(season.FullWorkingFolderPath);
-                        Directory.CreateDirectory(season.FullBackupFolderPath);
-                    }
 
                     TranslationFileCache = new TranslationFileCache(this);
                     GameFileCache = new GameFileCache(this);
-                    Backup = new Backup();
+                    BackupCache = new BackupCache();
 
                 }
                 catch (Exception e)

@@ -17,15 +17,31 @@ namespace Noel.Patch
 
         public override void AppMain()
         {
-            foreach (var season in Environment.Seasons)
+            using (Logger.Context("Patching game data:"))
             {
-                foreach (var file in season.TranslationFilenames)
+                int totalLinesChanged = 0;
+                foreach (var season in Environment.Seasons)
                 {
-                    var transFile = Environment.TranslationFileCache.Get(season.Number, file);
-                    var gameFile = Environment.GameFileCache.Get(season.Number, file);
-                    gameFile.Patch(transFile);
-                    Environment.GameFileCache.Update(gameFile);
+                    using (Logger.Context($"Season {season.Number}"))
+                    {
+                        foreach (var file in season.TranslationFilenames.Progress())
+                        {
+                            var transFile = Environment.TranslationFileCache.Get(season.Number, file);
+                            var gameFile = Environment.GameFileCache.Get(season.Number, file);
+                            var linesChanged = gameFile.Patch(transFile);
+
+                            if (linesChanged > 0)
+                            {
+                                totalLinesChanged += linesChanged;
+                                Logger.LogLine($"Patched {linesChanged} strings in {file}");
+                                Environment.GameFileCache.Update(gameFile);
+                            }
+                        }
+                    }
                 }
+
+                Logger.LogLine($"Patched {totalLinesChanged} strings in total");
+                Logger.LogLine("Done");
             }
         }
     }

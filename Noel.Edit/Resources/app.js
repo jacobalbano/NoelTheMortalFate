@@ -6,7 +6,7 @@
 
     tableSettings: {
 	    rowHeaders: true,
-	    colHeaders: ['Address', 'Meta', 'Source value', 'Patch value'],
+	    colHeaders: ['Address', 'Meta', 'Source value', 'Patch value'] ,
 	    columns: [
 		    { data: 'address' },
 		    { data: 'instructions'},

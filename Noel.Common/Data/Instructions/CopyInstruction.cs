@@ -8,15 +8,14 @@ namespace Noel.Common.Data.Instructions
 {
     public sealed class CopyInstruction : PatchInstruction
     {
-        public int LineNumber { get; set; }
+        public string LineReference{ get; set; }
 
-        public override void Apply(TranslationFile currentFile, TranslationString currentString, int currentLine)
+        public override void Apply(Dictionary<string, TranslationString> allStrings, TranslationString currentString)
         {
-            if (LineNumber >= currentFile.Strings.Length)
-                throw new IndexOutOfRangeException($"Attempted to copy from a string that was out of range (index {LineNumber})");
+            if (!allStrings.TryGetValue(LineReference, out var fromStr))
+                throw new IndexOutOfRangeException($"Attempted to copy from a string that was out of range (reference '{LineReference}')");
 
-            var fromString = currentFile.Strings[LineNumber];
-            currentString.PatchValue = fromString.PatchValue;
+            currentString.PatchValue = fromStr.PatchValue;
         }
     }
 }

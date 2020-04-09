@@ -27,7 +27,7 @@ namespace Noel.Setup
             {
                 if (!Directory.Exists(Path.Combine(EnvironmentDir.SeasonsDirectory, season.Root)))
                 {
-                    using (Logger.Context("Downloading season {0}", season.Number))
+                    using (Logger.Context($"Downloading season {season.Number}"))
                     {
                         var fullZipfilePath = Download(season.DownloadUrl)
                             .GetAwaiter()

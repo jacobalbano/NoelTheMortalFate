@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,12 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBase.cs" />
-    <Compile Include="Backup.cs" />
+    <Compile Include="Cache\BackupCache.cs" />
     <Compile Include="Cache\GameFileCache.cs" />
     <Compile Include="Cache\TranslationFileCache.cs" />
     <Compile Include="Cache\ConfigCache.cs" />
     <Compile Include="Config\Attributes.cs" />
     <Compile Include="Config\XnaAppConfig.cs" />
+    <Compile Include="Data\PathFilter.cs" />
     <Compile Include="EnvironmentDir.cs" />
     <Compile Include="Config\ExtractFilterConfig.cs" />
     <Compile Include="Config\GameDirectoryConfig.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Data\GameFile.cs" />
     <Compile Include="Data\Season.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="Http\Attributes.cs" />
     <Compile Include="Http\SimpleHTTPApiDispatcher.cs" />

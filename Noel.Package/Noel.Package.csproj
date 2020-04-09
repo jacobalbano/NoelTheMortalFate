@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9235074-447F-4F91-83E1-43476255AE10}</ProjectGuid>
+    <ProjectGuid>{1C28CCBD-E04D-49C4-8982-6C1E77841E4F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Noel.Extract</RootNamespace>
-    <AssemblyName>Noel.Extract</AssemblyName>
+    <RootNamespace>Noel.Package</RootNamespace>
+    <AssemblyName>Noel.Package</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,7 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
