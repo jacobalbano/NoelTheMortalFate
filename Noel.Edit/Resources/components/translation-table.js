@@ -55,6 +55,7 @@
 
 		function afterLoadData(initialLoad) {
 			set = {};
+			return;// FIXME: figure out why comments aren't working
 
 			//	get data for 'Source value' column
 			const columns = this.getDataAtCol(2);
@@ -62,8 +63,11 @@
 				const data = this.getSourceDataAtRow(row);
 
 				if (value in set) {
+					//	this is a duplicate
+					//	set a comment
 					set[value].push(data);
 				} else {
+					//	this is the original value
 					set[value] = [data];
 				}
 			});
@@ -72,34 +76,32 @@
 		}
 
 		function beforeContextMenuSetItems(menuItems) {
-			const [row, col, _r, _c] = (this.getSelected()[0] || []);
 			dynamicItems.splice(0, dynamicItems.length);
+			const [row, col, _r, _c] = (this.getSelected()[0] || []);
 
-			if (row == _r && col == _c) {
+			if (row == _r && col == _c) {	//	single cell selected
 				const data = this.getSourceDataAtRow(row);
-				const strings = set[data.sourceValue];
-				if (strings !== undefined) {
-					let i = 0;
-					for (const transStr of strings) {
-						if (transStr.patchValue != null) {
-							dynamicItems.push({
-								key: `copyFrom:${i++}`,
-								name: transStr.patchValue,
-								callback: function() {
-									data.instructions.push({ instructionType: 'CopyInstruction', lineReference: transStr.address });
-									this.render();
-								}
-							})
-						}
+				_.forEach(set[data.sourceValue], (transStr, i) => {
+					if (transStr !== data && transStr.patchValue != null) {
+						dynamicItems.push({
+							key: `copyFrom:${i}`,
+							name: transStr.patchValue,
+							callback: function() {
+								data.instructions.push({
+									instructionType: 'CopyInstruction',
+									lineReference: transStr.address
+								});
+								this.render();
+							}
+						})
 					}
-				}
-
+				});
 			}
 		}
 		
 		function patchValueRenderer(instance, td, row, col, prop, value, cellProperties) {
 			const data = instance.getSourceDataAtRow(row);
-			const copy = _.find(data.instructions, x => x.instructionType === 'CopyInstruction');
+			const copy = _.find(data.instructions, { instructionType : 'CopyInstruction' });
 			if (copy != null) {
 				const referredString = _.find(instance.getSourceData(), { address : copy.lineReference });
 
