@@ -65,7 +65,7 @@ namespace Noel.Common.Data
             else if (obj.Type == JTokenType.String)
             {
                 var strVal = obj.Value<string>();
-                if (!string.IsNullOrEmpty(strVal))
+                if (!string.IsNullOrWhiteSpace(strVal))
                 {
                     var roughPass = new string(obj.Path.Where(x => !char.IsNumber(x)).ToArray());
                     if (pathFilters.Any(x => x.IsMatch(roughPass, obj)))

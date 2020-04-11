@@ -2,47 +2,91 @@
     props: ['strings'],
 	
     data: function () {
-		const dynamicItems = [];
-		let set = { };
+		const vm = this;
+		const referenceMenuItems = [];
+		let groupBySrcVal = { };
 
         return {
 			tableSettings: {
 				rowHeaders: true,
-				colHeaders: ['Address', 'Meta', 'Source value', 'Patch value'] ,
+				colHeaders: ['Source value', 'Patch value'],
 				columns: [
-					{ data: 'address' },
-					{ data: 'instructions'},
 					{ data: 'sourceValue', readOnly: true },
 					{ data: 'patchValue', renderer: patchValueRenderer }
 				],
 
 				cells: function(row, col) {
-					const data = this.instance.getSourceDataAtRow(row);
+					const data = vm.strings[row];
+					const hot = this.instance;
+					const cellProps = { };
+					
 					const copy = _.find(data.instructions, { instructionType: 'CopyInstruction' });
-					if (copy != null)
-						return { readOnly: true };
+
+					if (col == 0) {
+						const group = groupBySrcVal[data.sourceValue];
+						if (group && group.length > 1 && data.patchValue == null && copy == null) {
+							cellProps.className = 'attention';
+							cellProps.comment = { value: 'Possible duplicate; consider referencing another string instead of repeating data', readOnly: true };
+						} else {
+							cellProps.className = '';
+							cellProps.comment = { };
+						}
+					}
+					if (col == 1) {
+						cellProps.readOnly = copy != null;
+					}
+					
+					return cellProps;
 				},
 
 				stretchH: 'last',
 				comments: true,
-		  
-				filters: true,
 				dropdownMenu: false,
-				hiddenColumns: {
-					columns: [0, 1],
-					indicators: false
-				},
 
 				contextMenu: {
+					callback: function() { this.render(); },
 					items: {
-						copyFrom: {
-							hidden: () => dynamicItems.length == 0,
-							name: 'Copy value from:',
-							disable: function() { return true; },
-							submenu: {
-								items: dynamicItems
+						'cut': { },
+						'copy': { },
+						'undo': { },
+						'redo': { },
+						'---------': { },
+
+						referTo: {
+							hidden: () => referenceMenuItems.length == 0,
+							name: 'Reference other string',
+							submenu: { items: referenceMenuItems }
+						},
+
+						referToThis: {
+							name: 'Make duplicates refer here',
+							hidden: function() {
+								const cell = selectedCellOrNull(this);
+								if (cell == null)
+									return true;
+
+								const data = vm.strings[cell.row];
+								const dupes = groupBySrcVal[data.sourceValue];
+
+								return dupes.length <= 1;
+							},
+
+							callback: function() {
+								const cell = selectedCellOrNull(this);
+								const data = vm.strings[cell.row];
+								const dupes = groupBySrcVal[data.sourceValue];
+
+								for (const str of dupes) {
+									if (str == data) continue;
+									const existingCopy = _.find(str.instructions, { instructionType: 'CopyInstruction' });
+									_.pull(str.instructions, existingCopy);
+									str.instructions.push({
+										instructionType: 'CopyInstruction',
+										lineReference: data.address
+									});
+								}
 							}
-						}     
+						}
 					}
 				},
 
@@ -54,44 +98,44 @@
         };
 
 		function afterLoadData(initialLoad) {
-			set = {};
-			return;// FIXME: figure out why comments aren't working
-
-			//	get data for 'Source value' column
-			const columns = this.getDataAtCol(2);
-			columns.forEach((value, row) => {
-				const data = this.getSourceDataAtRow(row);
-
-				if (value in set) {
-					//	this is a duplicate
-					//	set a comment
-					set[value].push(data);
-				} else {
-					//	this is the original value
-					set[value] = [data];
-				}
-			});
-
-			this.render();
+			console.log('afterLoadData');
+			groupBySrcVal = {};
+			for (const str of vm.strings) {
+				const group = groupBySrcVal[str.sourceValue] || (groupBySrcVal[str.sourceValue] = []);
+				group.push(str);
+			}
 		}
 
 		function beforeContextMenuSetItems(menuItems) {
-			dynamicItems.splice(0, dynamicItems.length);
-			const [row, col, _r, _c] = (this.getSelected()[0] || []);
+			referenceMenuItems.splice(0, referenceMenuItems.length);
+			const cell = selectedCellOrNull(this);
+			const data = vm.strings[cell.row];
 
-			if (row == _r && col == _c) {	//	single cell selected
-				const data = this.getSourceDataAtRow(row);
-				_.forEach(set[data.sourceValue], (transStr, i) => {
+			if (cell != null) {
+				addReferenceOptions(data);
+			}
+
+			function addReferenceOptions(data) {
+				const existingCopy = _.find(data.instructions, { instructionType: 'CopyInstruction' });
+				if (existingCopy != null)
+					referenceMenuItems.push({
+						key: 'referTo:removeReference',
+						name: 'Remove reference',
+						callback: () => _.pull(data.instructions, existingCopy)
+					});
+
+				_.forEach(groupBySrcVal[data.sourceValue], (transStr, i) => {
 					if (transStr !== data && transStr.patchValue != null) {
-						dynamicItems.push({
-							key: `copyFrom:${i}`,
-							name: transStr.patchValue,
+						referenceMenuItems.push({
+							key: `referTo:${i}`,
+							name: `"${transStr.patchValue}"`,
+
 							callback: function() {
+								_.pull(data.instructions, existingCopy);
 								data.instructions.push({
 									instructionType: 'CopyInstruction',
 									lineReference: transStr.address
 								});
-								this.render();
 							}
 						})
 					}
@@ -100,7 +144,7 @@
 		}
 		
 		function patchValueRenderer(instance, td, row, col, prop, value, cellProperties) {
-			const data = instance.getSourceDataAtRow(row);
+			const data = vm.strings[row];
 			const copy = _.find(data.instructions, { instructionType : 'CopyInstruction' });
 			if (copy != null) {
 				const referredString = _.find(instance.getSourceData(), { address : copy.lineReference });
@@ -110,6 +154,14 @@
 			}
 
 			Handsontable.renderers.TextRenderer.call(this, instance, td, row, col, prop, value, cellProperties);
+		}
+
+		function selectedCellOrNull(self) {
+			const [row, col, _r, _c] = (self.getSelected()[0] || [1, 2, 3, 4]);
+			if (row == _r && col == _c)
+				return { row, col };
+
+			return null;
 		}
     },
 	
