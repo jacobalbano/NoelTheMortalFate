@@ -9,6 +9,10 @@ body {
     text-align: center;
 }
 
+.attention {
+    text-decoration: #3D9970 wavy underline;
+}
+
 .tabs ul {
     min-height: 75px;
 }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9340A8D0-EDDF-41A8-82D0-20971454ECF9}</ProjectGuid>
+    <ProjectGuid>{1C28CCBD-E04D-49C4-8982-6C1E77841E4F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NoelTheMortalFate</RootNamespace>
-    <AssemblyName>NoelTheMortalFate</AssemblyName>
+    <RootNamespace>Noel.DevInstall</RootNamespace>
+    <AssemblyName>Noel.DevInstall</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Noel.Common\Noel.Common.csproj">
+      <Project>{DC759BC3-4182-4BAC-8C0D-367D7C6806F9}</Project>
+      <Name>Noel.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

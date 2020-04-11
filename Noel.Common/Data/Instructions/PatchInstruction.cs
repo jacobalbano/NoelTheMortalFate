@@ -22,7 +22,7 @@ namespace Noel.Common.Data.Instructions
         {
             private PatchInstruction Create(Type _, JObject jObject)
             {
-                var typename = jObject.Value<string>("InstructionType");
+                var typename = jObject.Value<string>("instructionType");
                 if (typeCache.TryGetValue(typename, out var type))
                     return type();
                 

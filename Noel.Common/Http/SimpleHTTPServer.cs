@@ -53,6 +53,7 @@ namespace Noel.Common.Http
                 {
                     HttpListenerContext context = listener.GetContext();
                     Process(context);
+                    Thread.Sleep(250);
                 }
                 catch { }
             }

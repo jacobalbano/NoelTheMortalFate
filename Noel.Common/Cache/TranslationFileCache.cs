@@ -53,7 +53,7 @@ namespace Noel.Common.Cache
                 {
                     if (!allStrings.TryGetValue(newStr.Address, out var oldStr))
                         allStrings[newStr.Address] = newStr;    //  new string, maybe updated filters
-                    else if (!string.IsNullOrEmpty(newStr.PatchValue))
+                    else if (!string.IsNullOrEmpty(newStr.PatchValue) || newStr.Instructions.Any() || (!newStr.Instructions.Any() && oldStr.Instructions.Any()))
                         allStrings[newStr.Address] = newStr; //  updating translation
                 }
 

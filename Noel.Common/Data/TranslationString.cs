@@ -11,10 +11,15 @@ namespace Noel.Common.Data
     {
         public string Address { get; set; }
 
-        public PatchInstruction[] Instructions { get; set; } = Array.Empty<PatchInstruction>();
+        public PatchInstruction[] Instructions { get; set; }
 
         public string SourceValue { get; set; }
 
         public string PatchValue { get; set; }
+
+        public TranslationString()
+        {
+             Instructions = Instructions ?? Array.Empty<PatchInstruction>();
+        }
     }
 }

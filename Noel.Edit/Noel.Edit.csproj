@@ -94,5 +94,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\components\file-browser.js" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\components\translation-table.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

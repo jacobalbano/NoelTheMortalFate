@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Common", "Noel.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Edit", "Noel.Edit\Noel.Edit.csproj", "{96886BDC-6076-4B4A-9602-6C9DF5FF598B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Setup", "Noel.Download\Noel.Setup.csproj", "{AE151D66-6517-48C2-813E-9C621DB4A288}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Setup", "Noel.Setup\Noel.Setup.csproj", "{AE151D66-6517-48C2-813E-9C621DB4A288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.Package", "Noel.Package\Noel.Package.csproj", "{1C28CCBD-E04D-49C4-8982-6C1E77841E4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noel.DevInstall", "Noel.DevInstall\Noel.DevInstall.csproj", "{1C28CCBD-E04D-49C4-8982-6C1E77841E4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

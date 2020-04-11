@@ -14,10 +14,10 @@
 		<script src="lib/vue-handsontable.min.js"></script>
 		<script src="lib/lodash.min.js"></script>
 
+		<script src="components/translation-table.js"></script>
 		<script src="components/season-folder.js"></script>
 		<script src="components/file-browser.js"></script>
-
-		<script defer src="types.js"></script>
+		
 		<script defer src="api.js"></script>
 		<script defer src="app.js"></script>
 	</head>
@@ -40,12 +40,8 @@
 
 				<div class="inner" v-if="activeFile != null">
 					<div class="hot-table">
-						<hot-table
-							:data="activeFile.file.strings"
-							:settings="tableSettings"
-						></hot-table>
+						<translation-table :strings="activeFile.file.strings"></translation-table>
 					</div>
-
 					<button @click="saveFile()"
 						:disabled="activeFile.isSaving"
 						:class="{ 'is-loading': activeFile.isSaving, 'is-danger': activeFile.isError }"

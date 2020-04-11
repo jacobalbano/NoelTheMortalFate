@@ -2,9 +2,6 @@
     props: ['number', 'files', 'filter'],
     data: function () {
         return {
-            number: 0,
-            files: [],
-            filter: '',
             expanded: false
         };
     },
@@ -16,12 +13,14 @@
 		}
 	},
     template: `
-    <li v-if="filteredFiles.length > 0">
-	    <a @click="expanded = !expanded">Season {{number}}</a>
-	    <ul v-if="expanded" class="menu-list">
-		    <li v-for="file in filteredFiles" @click="$emit('file-clicked', number, file)">
-                <a>{{file}}</a>
-            </li>
-	    </ul>
-	</li>`
+    <template>
+        <li v-if="filteredFiles.length > 0">
+	        <a @click="expanded = !expanded">Season {{number}}</a>
+	        <ul v-if="expanded" class="menu-list">
+		        <li v-for="file in filteredFiles" @click="$emit('file-clicked', number, file)">
+                    <a>{{file}}</a>
+                </li>
+	        </ul>
+	    </li>
+    </template>`
 });

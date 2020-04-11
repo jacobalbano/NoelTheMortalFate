@@ -30,9 +30,15 @@
 		};
 	}
 
-	function saveFile(file) {
+	async function saveFile(file) {
 		if (file == undefined) throw 'arg-null: file';
-		return httpPost('/api/TranslationFile', file);
+
+		const [result, _] = await Promise.all([
+			httpPost('/api/TranslationFile', file),
+			later(1000)
+		]);
+
+		return result;
 	}
 	
 	async function httpGet(route, args) {
