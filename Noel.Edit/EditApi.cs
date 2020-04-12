@@ -54,7 +54,7 @@ namespace Noel.Edit
         [HttpPost]
         public void TranslationFile(TranslationFile file)
         {
-            NoelEnvironment.Instance.TranslationFileCache.Update(file);
+            NoelEnvironment.Instance.TranslationFileCache.Update(file, isExtract: false);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Noel.Common.Cache
             }
         }
 
-        public void Update(TranslationFile file)
+        public void Update(TranslationFile file, bool isExtract)
         {
             var cacheKey = MakeCacheKey(file.SeasonNum, file.Filename);
 
@@ -49,12 +49,10 @@ namespace Noel.Common.Cache
                 //  merging
                 var allStrings = existingFile.Strings.ToDictionary(x => x.Address);
 
-                foreach (var newStr in file.Strings)
+                foreach (var str in file.Strings)
                 {
-                    if (!allStrings.TryGetValue(newStr.Address, out var oldStr))
-                        allStrings[newStr.Address] = newStr;    //  new string, maybe updated filters
-                    else if (!string.IsNullOrEmpty(newStr.PatchValue) || newStr.Instructions.Any() || (!newStr.Instructions.Any() && oldStr.Instructions.Any()))
-                        allStrings[newStr.Address] = newStr; //  updating translation
+                    if (!isExtract || !allStrings.TryGetValue(str.Address, out _))
+                        allStrings[str.Address] = str;
                 }
 
                 file.Strings = allStrings

@@ -53,6 +53,8 @@
     <Compile Include="Cache\ConfigCache.cs" />
     <Compile Include="Config\Attributes.cs" />
     <Compile Include="Config\XnaAppConfig.cs" />
+    <Compile Include="Data\PatchFile.cs" />
+    <Compile Include="Data\PatchString.cs" />
     <Compile Include="Data\PathFilter.cs" />
     <Compile Include="EnvironmentDir.cs" />
     <Compile Include="Config\ExtractFilterConfig.cs" />

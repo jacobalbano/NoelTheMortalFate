@@ -42,7 +42,7 @@ namespace Noel.Extract
                                 if (extract.Strings.Any())
                                 {
                                     seasonTotal += extract.Strings.Length;
-                                    Environment.TranslationFileCache.Update(extract);
+                                    Environment.TranslationFileCache.Update(extract, isExtract: true);
                                     backup.Add(gameFile);
 
                                     Logger.LogLine($"{extract.Strings.Length} strings extracted from {item}\t({item.Number}/{item.Total} files processed)");

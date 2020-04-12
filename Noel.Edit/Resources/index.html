@@ -24,7 +24,7 @@
 	<body>
 		<div id="vue-app">
 			<file-browser @file-clicked="openFile"></file-browser>
-			<div id="workspace" class="flex-panel">
+			<div id="workspace" class="flex-panel" v-cloak>
 				<p class="title is-5">Workspace</p>
 				<div class="tabs is-boxed">
 					<ul>

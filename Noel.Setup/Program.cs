@@ -34,7 +34,6 @@ namespace Noel.Setup
                             .GetResult();
 
                         Unzip(fullZipfilePath);
-                        File.Delete(fullZipfilePath);
                     }
                 }
             }
@@ -42,20 +41,27 @@ namespace Noel.Setup
 
         private async Task<string> Download(string downloadUrl)
         {
-            var filename = Path.GetTempFileName();
-            using (var wc = new WebClient())
-            {
-                int lastReport = 10;
-                wc.DownloadProgressChanged += (s, e) => {
-                    if (e.ProgressPercentage >= lastReport)
-                    {
-                        lastReport += 10;
-                        Logger.LogLine($"{e.ProgressPercentage}% downloaded ({e.BytesReceived / 1000 / 1000}/{e.TotalBytesToReceive / 100 / 100}MB)");
-                    }
-                };
+            var zips = Path.Combine(EnvironmentDir.RootDirectory, "zips");
+            Directory.CreateDirectory(zips);
 
-                await wc.DownloadFileTaskAsync(new Uri(downloadUrl), filename);
-                Logger.LogLine("Done");
+            var slash = downloadUrl.LastIndexOf('/') + 1;
+            var filename = Path.Combine(zips, downloadUrl.Substring(slash));
+            if (!File.Exists(filename))
+            {
+                using (var wc = new WebClient())
+                {
+                    int lastReport = 10;
+                    wc.DownloadProgressChanged += (s, e) => {
+                        if (e.ProgressPercentage >= lastReport)
+                        {
+                            lastReport += 10;
+                            Logger.LogLine($"{e.ProgressPercentage}% downloaded ({e.BytesReceived / 1000 / 1000}/{e.TotalBytesToReceive / 100 / 100}MB)");
+                        }
+                    };
+
+                    await wc.DownloadFileTaskAsync(new Uri(downloadUrl), filename);
+                    Logger.LogLine("Done");
+                }
             }
 
             return filename;
