@@ -10,53 +10,27 @@
 
 		<script src="lib/fa.all.js"></script>
 		<script src="lib/vue.min.js"></script>
+		<script src="lib/bulmabox.min.js"></script>
 		<script src="lib/handsontable.full.min.js"></script>
 		<script src="lib/vue-handsontable.min.js"></script>
 		<script src="lib/lodash.min.js"></script>
+		
+		<script src="locator.js"></script>
+		<script src="services/api.service.js"></script>
+		<script src="services/confirm.service.js"></script>
+		<script src="services/workspace.service.js"></script>
 
 		<script src="components/translation-table.js"></script>
 		<script src="components/season-folder.js"></script>
 		<script src="components/file-browser.js"></script>
-		
-		<script defer src="api.js"></script>
+		<script src="components/workspace.js"></script>
+
 		<script defer src="app.js"></script>
 	</head>
-	<body>
-		<div id="vue-app">
-			<file-browser @file-clicked="openFile"></file-browser>
-			<div id="workspace" class="flex-panel" v-cloak>
-				<p class="title is-5">Workspace</p>
-				<div class="tabs is-boxed">
-					<ul>
-						<li @click="focusTab(index)" v-bind:class="{ 'is-active': isActive(file) }" v-for="(file, index) in files">
-							<a>
-								<span>Season {{file.file.seasonNum}}/{{file.file.filename}}</span>
-								&nbsp;&nbsp;
-								<button @click="deleteTab(index)" class="delete is-small"></button>
-							</a>
-						</li>
-					</ul>
-				</div>
-
-				<div class="inner" v-if="activeFile != null">
-					<div class="hot-table">
-						<translation-table :strings="activeFile.file.strings"></translation-table>
-					</div>
-					<button @click="saveFile()"
-						:disabled="activeFile.isSaving"
-						:class="{ 'is-loading': activeFile.isSaving, 'is-danger': activeFile.isError }"
-						class="save-button button is-success"
-					>
-						<span class="icon is-small">
-							<i class="fas fa-check"></i>
-						</span>
-						<span>Save</span>
-					</button>
-				</div>
-				<div v-else>
-					Choose a file from the browser on the left
-				</div>
-			</div>
-		</div>
-	</body>
+<body>
+	<div id="vue-app">
+		<file-browser id="file-browser"></file-browser>
+		<workspace id="workspace" ></workspace>
+	</div>
+</body>
 </html>

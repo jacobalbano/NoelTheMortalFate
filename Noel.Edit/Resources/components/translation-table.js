@@ -1,5 +1,5 @@
 ﻿Vue.component('translation-table', {
-    props: ['strings'],
+    props: ['strings', 'isDirty'],
 	
     data: function () {
 		const vm = this;
@@ -91,6 +91,7 @@
 				},
 
 				afterLoadData,
+				afterChange,
 				beforeContextMenuSetItems,
 
 				licenseKey: 'non-commercial-and-evaluation'
@@ -98,12 +99,16 @@
         };
 
 		function afterLoadData(initialLoad) {
-			console.log('afterLoadData');
 			groupBySrcVal = {};
 			for (const str of vm.strings) {
 				const group = groupBySrcVal[str.sourceValue] || (groupBySrcVal[str.sourceValue] = []);
 				group.push(str);
 			}
+		}
+
+		function afterChange(_, source) {
+			if (source == 'edit')
+				vm.$emit('edit');
 		}
 
 		function beforeContextMenuSetItems(menuItems) {

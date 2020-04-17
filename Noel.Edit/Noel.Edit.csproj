@@ -65,7 +65,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\api.js" />
+    <EmbeddedResource Include="Resources\services\api.service.js" />
     <EmbeddedResource Include="Resources\components\season-folder.js" />
     <EmbeddedResource Include="Resources\css\fa.all.min.css" />
     <EmbeddedResource Include="Resources\css\handsontable.full.min.css" />
@@ -75,16 +75,14 @@
     <EmbeddedResource Include="Resources\lib\fa.all.js" />
     <EmbeddedResource Include="Resources\lib\handsontable.full.min.js" />
     <EmbeddedResource Include="Resources\lib\lodash.min.js" />
-    <EmbeddedResource Include="Resources\types.js" />
+    <EmbeddedResource Include="Resources\locator.js" />
     <EmbeddedResource Include="Resources\lib\vue-handsontable.min.js" />
     <EmbeddedResource Include="Resources\lib\vue.min.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\index.html" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\img\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Noel.Common\Noel.Common.csproj">
       <Project>{DC759BC3-4182-4BAC-8C0D-367D7C6806F9}</Project>
@@ -96,6 +94,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\components\translation-table.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\lib\bulmabox.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\components\workspace.js" />
+    <EmbeddedResource Include="Resources\services\workspace.service.js" />
+    <Content Include="Resources\services\confirm.service.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

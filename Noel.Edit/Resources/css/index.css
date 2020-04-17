@@ -13,6 +13,10 @@ body {
     text-decoration: #3D9970 wavy underline;
 }
 
+.ht_clone_top, .ht_clone_left, .ht_clone_top_left_corner {
+    z-index: unset;
+}
+
 .tabs ul {
     min-height: 75px;
 }

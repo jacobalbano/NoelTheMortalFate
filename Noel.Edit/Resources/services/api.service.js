@@ -1,14 +1,15 @@
-﻿window.api = (function() {
-	"use strict";
-	
+﻿$locator.service('$api', function() {
 	return {
-		getFiletree,
-		getFullTextSearch,
+		inject: [],
+		instance: {
+			getFiletree,
+			getFullTextSearch,
 
-		getFile,
-		saveFile,
+			getFile,
+			saveFile,
+		}
 	};
-	
+
 	function getFiletree() {
 		return httpGet('/api/Filetree');
 	}
@@ -21,19 +22,13 @@
 		if (seasonNum == undefined) throw 'arg-null: seasonNum';
 		if (filename == undefined) throw 'arg-null: filename';
 
-		//	massage data to fit HOT
-		const file = await httpGet('/api/TranslationFile', { seasonNum, filename });
-		return {
-			file: file,
-			isError: false,
-			isSaving: false
-		};
+		return httpGet('/api/TranslationFile', { seasonNum, filename });
 	}
 
 	async function saveFile(file) {
 		if (file == undefined) throw 'arg-null: file';
 
-		const [result, _] = await Promise.all([
+		const [result] = await Promise.all([
 			httpPost('/api/TranslationFile', file),
 			later(1000)
 		]);
@@ -73,6 +68,6 @@
 	function later(delay) {
 		return new Promise(function(resolve) {
 			setTimeout(resolve, delay);
-    });
-}
-})();
+		});
+	}
+});
